@@ -39,7 +39,7 @@ export const login = async (credentials) => {
         localStorage.setItem('access_token', respone.data.access_token);
         localStorage.setItem('refresh_token', respone.data.refresh_token);
         localStorage.setItem('is_superuser', respone.data.is_superuser);
-        localStorage.setItem('role', respone.data.role);
+        localStorage.setItem('role', String(respone.data.role));
         return respone.data;
     } catch (error) {
         console.error("Login error: ", error.response?.data || error.message);

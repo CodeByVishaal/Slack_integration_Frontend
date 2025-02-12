@@ -20,17 +20,21 @@ const Login = () => {
       setMessage(response.error);
       setCredentials({ email: "", password: "" });
     } else {
-      const isCustomer = localStorage.getItem('is_superuser');
-      navigate(isCustomer ? '/dashboard': '/programs');
+      const userRole = localStorage.getItem("role");
+
+      if (userRole === 'admin') {
+        navigate("/dashboard");
+      } else if (userRole === "customer" || userRole === "researcher") {
+        navigate("/programs");
+      } else {
+        setMessage("Invalid role. Please contact support.");
+      }
     }
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div
-        className="card p-4 shadow-lg"
-        style={{borderRadius: "12px"}}
-      >
+      <div className="card p-4 shadow-lg" style={{ borderRadius: "12px" }}>
         <h2 className="text-center mb-4">Login</h2>
         {message && <div className="alert alert-danger">{message}</div>}
         <form onSubmit={handleSubmit}>

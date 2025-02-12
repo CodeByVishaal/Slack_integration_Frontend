@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../api";
+import Logout from "./LogoutPage";
 
 const ProgramPage = () => {
   const [programs, setPrograms] = useState([]);
@@ -71,6 +72,8 @@ const ProgramPage = () => {
   };
 
   return (
+    <>
+    <Logout />
     <div className="container mt-5">
       <h2 className="text-center">Programs</h2>
 
@@ -162,6 +165,7 @@ const ProgramPage = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
