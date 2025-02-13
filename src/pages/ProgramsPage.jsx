@@ -56,6 +56,8 @@ const ProgramPage = () => {
       formDataObj.append(key, value);
     });
 
+    console.log('Request Body:', formDataObj);
+
     try {
       await axiosInstance.post("programs/", formDataObj, {
         headers: {
