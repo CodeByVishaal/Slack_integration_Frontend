@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../api";
-import Logout from "./LogoutPage";
+import Header from "./Header";
 
 const ProgramPage = () => {
   const [programs, setPrograms] = useState([]);
@@ -73,7 +73,7 @@ const ProgramPage = () => {
 
   return (
     <>
-    <Logout />
+    <Header />
     <div className="container mt-5">
       <h2 className="text-center">Programs</h2>
 
@@ -186,8 +186,10 @@ const handleDelete = async (id) => {
   if (!window.confirm("Are you sure you want to delete this program?")) return;
 
   try {
-    await axiosInstance.delete(`programs/${id}/`, { headers: authHeader() });
+    await axiosInstance.delete(`programs/update/${id}/`, { headers: authHeader() });
     window.location.reload();
+    setMessage("Program Deleted Successfully");
+    {message && <div className="alert alert-info">{message}</div>}
   } catch (error) {
     console.error("Error deleting program:", error);
   }

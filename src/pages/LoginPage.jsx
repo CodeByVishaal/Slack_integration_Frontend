@@ -24,9 +24,13 @@ const Login = () => {
 
       if (userRole === 'admin') {
         navigate("/dashboard");
-      } else if (userRole === "customer" || userRole === "researcher") {
+      } else if (userRole === "customer") {
         navigate("/programs");
-      } else {
+      }
+      else if (userRole === "researcher"){
+        navigate("/submissions");
+      }
+      else {
         setMessage("Invalid role. Please contact support.");
       }
     }
