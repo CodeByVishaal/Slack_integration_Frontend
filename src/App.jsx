@@ -10,6 +10,10 @@ import Home from "./pages/HomePage";
 import ProgramPage from "./pages/ProgramsPage";
 import Submissions from "./pages/SubmissionsPage";
 import PrivateRoute from "./pages/PrivateRoute";
+import SlackIntegration from "./pages/SlackIntegration";
+import SlackChannel from "./pages/SlackChannel";
+import EditProgram from "./pages/EditProgram";
+import SlackAuthPage from "./pages/SlackAuthPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -21,6 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/programs/edit/:id" element={<EditProgram />} />
         <Route
           path="/dashboard"
           element={
@@ -45,6 +50,33 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/select-slack-channel"
+          element={
+            <PrivateRoute>
+              <SlackChannel />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/slack"
+          element={
+            <PrivateRoute>
+              <SlackIntegration />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/slack-auth-test"
+          element={
+            <PrivateRoute>
+              <SlackAuthPage />
+            </PrivateRoute>
+          }
+        />
+
+
       </Routes>
     </Router>
   );
