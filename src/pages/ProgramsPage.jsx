@@ -2,6 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../api";
 import Header from "./Header";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { AspectRatio } from "../components/ui/aspect-ratio";
 
 const ProgramPage = () => {
   const [programs, setPrograms] = useState([]);
@@ -68,6 +81,19 @@ const ProgramPage = () => {
         },
       });
       setMessage("Program created successfully!");
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline">Show Dialog</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Program created successfully!</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>;
       fetchPrograms(); // Re-fetch all programs
     } catch (error) {
       console.error("Failed to create program:", error);
@@ -76,7 +102,7 @@ const ProgramPage = () => {
   };
 
   return (
-    <>
+    <AspectRatio ratio={16 / 9}>
       <Header />
       <div className="container mt-5">
         <h2 className="text-center">Programs</h2>
@@ -162,20 +188,41 @@ const ProgramPage = () => {
                     </div>
                     {userRole === "admin" && (
                       <div className="mt-3">
-                        <button
-                          className="btn btn-warning btn-sm px-3"
+                        <Button
+                          className="text-black mr-3 bg-yellow-300"
                           onClick={() =>
                             navigate(`/programs/edit/${program.id}`)
                           }
                         >
                           ✏️ Edit
-                        </button>
-                        <button
-                          className="btn btn-danger btn-sm px-3"
-                          onClick={() => handleDelete(program.id)}
-                        >
-                          Delete
-                        </button>
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button className="bg-red-700">
+                              Delete
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you sure you want to delete this program?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your account and remove your
+                                data from our servers.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>No</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(program.id)}
+                              >
+                                Yes
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     )}
                   </div>
@@ -185,7 +232,7 @@ const ProgramPage = () => {
           )}
         </div>
       </div>
-    </>
+    </AspectRatio>
   );
 };
 
@@ -207,7 +254,7 @@ const getSeverityColor = (severity) => {
 
 // Handle Program Deletion
 const handleDelete = async (id) => {
-  if (!window.confirm("Are you sure you want to delete this program?")) return;
+  //   if (!window.confirm("Are you sure you want to delete this program?")) return;
 
   try {
     await axiosInstance.delete(`programs/update/${id}/`, {

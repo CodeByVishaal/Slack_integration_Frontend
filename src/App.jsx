@@ -14,71 +14,72 @@ import SlackIntegration from "./pages/SlackIntegration";
 import SlackChannel from "./pages/SlackChannel";
 import EditProgram from "./pages/EditProgram";
 import SlackAuthPage from "./pages/SlackAuthPage";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/programs/edit/:id" element={<EditProgram />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/programs"
-          element={
-            <PrivateRoute>
-              <ProgramPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/submissions"
-          element={
-            <PrivateRoute>
-              <Submissions />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/select-slack-channel"
-          element={
-            <PrivateRoute>
-              <SlackChannel />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/slack"
-          element={
-            <PrivateRoute>
-              <SlackIntegration />
-            </PrivateRoute>
-          }
-        />
+    <AspectRatio ratio={16 / 9}>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/programs/edit/:id" element={<EditProgram />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/programs"
+            element={
+              <PrivateRoute>
+                <ProgramPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/submissions"
+            element={
+              <PrivateRoute>
+                <Submissions />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/select-slack-channel"
+            element={
+              <PrivateRoute>
+                <SlackChannel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/slack"
+            element={
+              <PrivateRoute>
+                <SlackIntegration />
+              </PrivateRoute>
+            }
+          />
 
-        <Route
-          path="/slack-auth-test"
-          element={
-            <PrivateRoute>
-              <SlackAuthPage />
-            </PrivateRoute>
-          }
-        />
-
-
-      </Routes>
-    </Router>
+          <Route
+            path="/slack-auth-test"
+            element={
+              <PrivateRoute>
+                <SlackAuthPage />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AspectRatio>
   );
 }
 

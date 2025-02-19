@@ -2,6 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../api";
 import Header from "./Header";
+import { Button } from "../components/ui/button";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog";
 
 const Submissions = () => {
   const [submission, setSubmission] = useState([]);
@@ -88,7 +100,7 @@ const Submissions = () => {
       formDataObj.append("evidence", formData.evidence);
     }
 
-    console.log("Final FormData:", [...formDataObj.entries()]);  // Debugging log
+    console.log("Final FormData:", [...formDataObj.entries()]); // Debugging log
 
     try {
       await axiosInstance.post("submissions/", formDataObj, {
@@ -97,8 +109,14 @@ const Submissions = () => {
       setMessage("Program created successfully!");
       fetchSubmissions();
     } catch (error) {
-        console.error("Failed to create Submission: ", error.response?.data || error.message);
-        setMessage("Failed to Create Submission. Error: " + JSON.stringify(error.response?.data));
+      console.error(
+        "Failed to create Submission: ",
+        error.response?.data || error.message
+      );
+      setMessage(
+        "Failed to Create Submission. Error: " +
+          JSON.stringify(error.response?.data)
+      );
     }
   };
 
@@ -106,7 +124,7 @@ const Submissions = () => {
     <>
       <Header />
       <div className="container mt-5"></div>
-      <h2 className="text-center">Submissions</h2>
+      <h2 className="my-5 text-center">Submissions</h2>
 
       {/* Show Error Message */}
       {message && <div className="alert alert-info">{message}</div>}
@@ -207,12 +225,37 @@ const Submissions = () => {
                   </div>
                   {userRole === "admin" && (
                     <div className="mt-3">
-                      <button
-                        className="btn btn-danger btn-sm px-3"
-                        onClick={() => handleDelete(submission.id)}
+                      <Button
+                        className="text-black mr-3 bg-yellow-300"
+                        onClick={() => navigate(`/submissions/edit/${program.id}`)}
                       >
-                        Delete
-                      </button>
+                        ✏️ Edit
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button className="bg-red-700">Delete</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you sure you want to delete this submission?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>No</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(program.id)}
+                            >
+                              Yes
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   )}
                   ;

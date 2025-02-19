@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../api";
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+  import { Button } from "@/components/ui/button"
 
 const EditProgram = () => {
   const { id } = useParams();
@@ -31,6 +44,7 @@ const EditProgram = () => {
   console.log("Submitting Data (without taxonomy):", updatedData);
 
     try {
+
       await axiosInstance.patch(`programs/update/${id}/`, updatedData);
       alert("Program updated successfully!");
       navigate("/programs");
@@ -41,7 +55,8 @@ const EditProgram = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container w-[450px] mt-5">
+        <AspectRatio ratio={16 / 9}>
       <h2>Edit Program</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -72,8 +87,22 @@ const EditProgram = () => {
             <option value="closed">Closed</option>
             </select>
         </div>
-        <button type="submit" className="btn btn-success">Update Program</button>
+        <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button className="btn btn-success">Update Program</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure you want to Update the changes?</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>No</AlertDialogCancel>
+          <AlertDialogAction onClick={handleSubmit}>Yes</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
       </form>
+      </AspectRatio>
     </div>
   );
 };
