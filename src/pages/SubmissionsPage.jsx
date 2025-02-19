@@ -227,7 +227,7 @@ const Submissions = () => {
                     <div className="mt-3">
                       <Button
                         className="text-black mr-3 bg-yellow-300"
-                        onClick={() => navigate(`/submissions/edit/${program.id}`)}
+                        onClick={() => navigate(`/submissions/edit/${submission.id}`)}
                       >
                         ✏️ Edit
                       </Button>
@@ -249,7 +249,7 @@ const Submissions = () => {
                           <AlertDialogFooter>
                             <AlertDialogCancel>No</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDelete(program.id)}
+                              onClick={() => handleDelete(submission.id)}
                             >
                               Yes
                             </AlertDialogAction>
@@ -293,9 +293,6 @@ const getSeverityColor = (severity) => {
 
 // Handle Program Deletion
 const handleDelete = async (id) => {
-  if (!window.confirm("Are you sure you want to delete this submission?"))
-    return;
-
   try {
     await axiosInstance.delete(`submissions/update/${id}/`, {
       headers: authHeader(),

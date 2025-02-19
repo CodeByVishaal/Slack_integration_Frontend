@@ -15,6 +15,7 @@ import SlackChannel from "./pages/SlackChannel";
 import EditProgram from "./pages/EditProgram";
 import SlackAuthPage from "./pages/SlackAuthPage";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import EditSubmission from "./pages/EditSubmission";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -28,6 +29,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/programs/edit/:id" element={<EditProgram />} />
+          <Route path="/submissions/edit/:id" element={<EditSubmission />} />
           <Route
             path="/dashboard"
             element={
