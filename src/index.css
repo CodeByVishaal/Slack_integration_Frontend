@@ -6,6 +6,9 @@
 body{
   background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 }
+
+/* className='bg-gradient-to-r from-violet-200 to-pink-200 text-black' */
+
 @layer base {
   :root {
     --background: 0 0% 100%;

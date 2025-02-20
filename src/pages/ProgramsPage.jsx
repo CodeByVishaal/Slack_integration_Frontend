@@ -68,6 +68,9 @@ const ProgramPage = () => {
 
     const formDataObj = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
+        if (key === "taxonomy" && value === null) {
+            return; // Don't append if taxonomy is null
+          }
       formDataObj.append(key, value);
     });
 
@@ -81,19 +84,6 @@ const ProgramPage = () => {
         },
       });
       setMessage("Program created successfully!");
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="outline">Show Dialog</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Program created successfully!</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction>Continue</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>;
       fetchPrograms(); // Re-fetch all programs
     } catch (error) {
       console.error("Failed to create program:", error);
@@ -114,7 +104,7 @@ const ProgramPage = () => {
         {userRole === "customer" && (
           <div className="card p-3 mb-4 shadow-sm">
             <h4>Create a New Program</h4>
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="mb-3">
                 <label className="form-label">Title</label>
                 <input
@@ -156,9 +146,20 @@ const ProgramPage = () => {
                   onChange={handleFileChange}
                 />
               </div>
-              <button type="submit" className="btn btn-primary w-100">
-                Create Program
-              </button>
+              <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button className="bg-green-600">Create Program</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className='bg-gradient-to-r from-violet-200 to-pink-200 text-black'>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to create this program?</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter className='justify-center'>
+            <AlertDialogCancel className='bg-black text-white'>No</AlertDialogCancel>
+            <AlertDialogAction className="mx-10 my-2" onClick={handleSubmit}>Yes</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>;
             </form>
           </div>
         )}

@@ -25,7 +25,7 @@ const Header = () => {
   }, [])
 
   return (
-    <Navbar className="flex">
+    <Navbar className="">
       {isCustomer ? (
         <Button onClick={() => navigate('/slack-auth-test')} className="px-3 py-2.5 text-black-sm mx-80 mr-3 bg-gradient-to-r from-violet-200 to-pink-200">
         Connect Slack
