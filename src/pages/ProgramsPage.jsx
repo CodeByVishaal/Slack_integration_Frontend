@@ -13,8 +13,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { AspectRatio } from "../components/ui/aspect-ratio";
+import { useToast } from "../hooks/use-toast";
 
 const ProgramPage = () => {
   const [programs, setPrograms] = useState([]);
@@ -25,8 +26,10 @@ const ProgramPage = () => {
     taxonomy: null,
   });
   const [message, setMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
+  const { toast } = useToast();
 
   // Fetch Programs
   const fetchPrograms = () => {
@@ -68,9 +71,9 @@ const ProgramPage = () => {
 
     const formDataObj = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
-        if (key === "taxonomy" && value === null) {
-            return; // Don't append if taxonomy is null
-          }
+      if (key === "taxonomy" && value === null) {
+        return; // Don't append if taxonomy is null
+      }
       formDataObj.append(key, value);
     });
 
@@ -83,7 +86,14 @@ const ProgramPage = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setMessage("Program created successfully!");
+
+      setIsDialogOpen(false);
+
+      toast({
+        variant: "kt",
+        description: "Program created successfully!",
+      });
+
       fetchPrograms(); // Re-fetch all programs
     } catch (error) {
       console.error("Failed to create program:", error);
@@ -146,20 +156,30 @@ const ProgramPage = () => {
                   onChange={handleFileChange}
                 />
               </div>
-              <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button className="bg-green-600">Create Program</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent className='bg-gradient-to-r from-violet-200 to-pink-200 text-black'>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to create this program?</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter className='justify-center'>
-            <AlertDialogCancel className='bg-black text-white'>No</AlertDialogCancel>
-            <AlertDialogAction className="mx-10 my-2" onClick={handleSubmit}>Yes</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>;
+              <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button className="bg-green-600">Create Program</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-gradient-to-r from-violet-200 to-pink-200 text-black">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to create this program?
+                    </AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="justify-center">
+                    <AlertDialogCancel className="bg-black text-white">
+                      No
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="mx-10 my-2"
+                      onClick={handleSubmit}
+                    >
+                      Yes
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              ;
             </form>
           </div>
         )}
@@ -199,11 +219,9 @@ const ProgramPage = () => {
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button className="bg-red-700">
-                              Delete
-                            </Button>
+                            <Button className="bg-red-700">Delete</Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent className="bg-gradient-to-r from-violet-200 to-pink-200 text-black">
                             <AlertDialogHeader>
                               <AlertDialogTitle>
                                 Are you sure you want to delete this program?
@@ -214,10 +232,11 @@ const ProgramPage = () => {
                                 data from our servers.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>No</AlertDialogCancel>
+                            <AlertDialogFooter className='justify-center'>
+                              <AlertDialogCancel className='bg-black text-white'>No</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDelete(program.id)}
+                                className='my-2'
                               >
                                 Yes
                               </AlertDialogAction>
@@ -261,11 +280,14 @@ const handleDelete = async (id) => {
     await axiosInstance.delete(`programs/update/${id}/`, {
       headers: authHeader(),
     });
-    window.location.reload();
+    setPrograms((prevPrograms) => prevPrograms.filter((p) => p.id !== id));
     setMessage("Program Deleted Successfully");
-    {
-      message && <div className="alert alert-info">{message}</div>;
-    }
+    toast({
+        variant: "kt",
+        description: "Program deleted successfully!",
+      });
+
+      fetchPrograms();
   } catch (error) {
     console.error("Error deleting program:", error);
   }

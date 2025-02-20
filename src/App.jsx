@@ -16,11 +16,13 @@ import EditProgram from "./pages/EditProgram";
 import SlackAuthPage from "./pages/SlackAuthPage";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import EditSubmission from "./pages/EditSubmission";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
+    <>
     <AspectRatio ratio={16 / 9}>
       <Router>
         <Routes>
@@ -82,6 +84,8 @@ function App() {
         </Routes>
       </Router>
     </AspectRatio>
+    <Toaster />
+    </>
   );
 }
 
