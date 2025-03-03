@@ -1,4 +1,4 @@
-# Issue Tracking with Slack Integration Frontend README
+# Issue Tracking App with Slack Integration
 
 ## Project Overview
 
@@ -38,7 +38,7 @@ This is the frontend repository for the Issue Tracking with Slack Integration pr
 
 ## Usage
 
-1. Open the application in your web browser at http://localhost:3000.
+1. Open the application in your web browser according to the server when you run the application http://localhost:3000 or http://localhost:5173.
 2. Log in to the application using your credentials.
 3. There are 3 types of users
 4. Admin can create, assign and delete issues
@@ -65,7 +65,7 @@ This is the frontend repository for the Issue Tracking with Slack Integration pr
 ## Acknowledgements
 
 - This project uses the Slack API for integration.
-- This project uses Radix UI and Tailwind CSS for UI components.
+- This project uses Bootstrap and Tailwind CSS for UI components.
 
 ## Contact
 
