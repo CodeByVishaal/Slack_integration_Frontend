@@ -101,6 +101,27 @@ const ProgramPage = () => {
     }
   };
 
+  // Handle Program Deletion
+  const handleDelete = async (id) => {
+    //   if (!window.confirm("Are you sure you want to delete this program?")) return;
+
+    try {
+      await axiosInstance.delete(`programs/update/${id}/`, {
+        headers: authHeader(),
+      });
+      setPrograms((prevPrograms) => prevPrograms.filter((p) => p.id !== id));
+      setMessage("Program Deleted Successfully");
+      toast({
+        variant: "kt",
+        description: "Program deleted successfully!",
+      });
+
+      fetchPrograms();
+    } catch (error) {
+      console.error("Error deleting program:", error);
+    }
+  };
+
   return (
     <AspectRatio ratio={16 / 9}>
       <Header />
@@ -217,7 +238,10 @@ const ProgramPage = () => {
                         >
                           ✏️ Edit
                         </Button>
-                        <AlertDialog>
+                        <AlertDialog
+                          open={isDialogOpen}
+                          onOpenChange={setIsDialogOpen}
+                        >
                           <AlertDialogTrigger asChild>
                             <Button className="bg-red-700">Delete</Button>
                           </AlertDialogTrigger>
@@ -232,11 +256,13 @@ const ProgramPage = () => {
                                 data from our servers.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
-                            <AlertDialogFooter className='justify-center'>
-                              <AlertDialogCancel className='bg-black text-white'>No</AlertDialogCancel>
+                            <AlertDialogFooter className="justify-center">
+                              <AlertDialogCancel className="bg-black text-white">
+                                No
+                              </AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDelete(program.id)}
-                                className='my-2'
+                                className="my-2"
                               >
                                 Yes
                               </AlertDialogAction>
@@ -270,27 +296,6 @@ const getSeverityColor = (severity) => {
     : severity === "medium"
     ? "warning"
     : "success";
-};
-
-// Handle Program Deletion
-const handleDelete = async (id) => {
-  //   if (!window.confirm("Are you sure you want to delete this program?")) return;
-
-  try {
-    await axiosInstance.delete(`programs/update/${id}/`, {
-      headers: authHeader(),
-    });
-    setPrograms((prevPrograms) => prevPrograms.filter((p) => p.id !== id));
-    setMessage("Program Deleted Successfully");
-    toast({
-        variant: "kt",
-        description: "Program deleted successfully!",
-      });
-
-      fetchPrograms();
-  } catch (error) {
-    console.error("Error deleting program:", error);
-  }
 };
 
 export default ProgramPage;
